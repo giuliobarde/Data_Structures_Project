@@ -1,55 +1,45 @@
 import pygame
+from constants import *
 
 pygame.init()
-
-WIDTH = 900
-HEIGHT = 500
-WHITE = (255, 255, 255)
-TEXT_COLOR = (0, 0, 0)
-SQUARE_SIZE = 50
-PADDING = 10
-FONT_SIZE = 24
-FPS = 60
-
 
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Data Structures Project")
 
-font = pygame.font.Font(None, FONT_SIZE)
+def bubblesort(array):
 
-
-array = [4, 2, 5, 7, 3]
-
-def draw_display(color):
-    WINDOW.fill(color)
-
-def display_array(array):
-
-    for index, number in enumerate(array):
-
-        x = PADDING + index * (SQUARE_SIZE + PADDING)
-        y = (HEIGHT - SQUARE_SIZE) // 4
-
-        pygame.draw.rect(WINDOW, WHITE, (x, y, SQUARE_SIZE, SQUARE_SIZE))
-
-        text_surface = font.render(str(number), True, TEXT_COLOR)
-        text_rect = text_surface.get_rect(center=(x + SQUARE_SIZE // 2, y + SQUARE_SIZE // 2))
-        WINDOW.blit(text_surface, text_rect)
-
-    pygame.display.flip()
+    for i in range(len(array) - 1):
+        for j in range(len(array) - 1 - i):
+            if array[j] > array[j + 1]:
+                temp = array[j]
+                array[j]  = array[j + 1] 
+                array[j + 1] = temp
+                yield array[:]
 
 def main():
     clock = pygame.time.Clock()
     run = True
+    array = [4, 2, 5, 7, 3]
+    sorting_steps = bubblesort(array)
+    current_array = array[:]
+
+    step_timer = pygame.time.get_ticks()
+
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
-        draw_display(WHITE)
-        display_array(array)
+        draw_display(WINDOW, WHITE)
+        display_array(WINDOW, current_array)
 
+        if pygame.time.get_ticks() - step_timer > 1000:
+            try:
+                current_array = next(sorting_steps)
+                step_timer = pygame.time.get_ticks()
+            except StopIteration:
+                pass
 
     pygame.quit()
 
