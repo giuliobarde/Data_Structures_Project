@@ -1,27 +1,21 @@
 import pygame
-from constants import *
+from Constants import *
+from Sorting_Algorithms import *
 
+# Initialize Pygame
 pygame.init()
 
+# Set up the display
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Data Structures Project")
-
-def bubblesort(array):
-
-    for i in range(len(array) - 1):
-        for j in range(len(array) - 1 - i):
-            if array[j] > array[j + 1]:
-                temp = array[j]
-                array[j]  = array[j + 1] 
-                array[j + 1] = temp
-                yield array[:]
 
 def main():
     clock = pygame.time.Clock()
     run = True
-    array = [4, 2, 5, 7, 3]
+    array = [99, 4, 2, 5, 7, 3, 8, 33, 1]
     sorting_steps = bubblesort(array)
     current_array = array[:]
+    highlight_indices = []
 
     step_timer = pygame.time.get_ticks()
 
@@ -32,14 +26,15 @@ def main():
                 run = False
 
         draw_display(WINDOW, WHITE)
-        display_array(WINDOW, current_array)
+        display_array(WINDOW, current_array, highlight_indices)
 
-        if pygame.time.get_ticks() - step_timer > 1000:
+        if pygame.time.get_ticks() - step_timer > 500:
             try:
-                current_array = next(sorting_steps)
+                current_array, i, j = next(sorting_steps)
+                highlight_indices = [i, j]
                 step_timer = pygame.time.get_ticks()
             except StopIteration:
-                pass
+                highlight_indices = []
 
     pygame.quit()
 
