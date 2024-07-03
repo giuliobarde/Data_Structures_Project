@@ -13,7 +13,7 @@ def main():
     clock = pygame.time.Clock()
     run = True
     array = [99, 4, 2, 5, 7, 3, 8, 33, 1]
-    sorting_steps = bubblesort(array)
+    sorting_steps = insertionSort(array)
     current_array = array[:]
     highlight_indices = []
 
