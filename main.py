@@ -9,6 +9,8 @@ pygame.init()
 WINDOW = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Data Structures Project")
 
+array_size_input = pygame.Rect(200, 200, 240, 32)
+
 def main():
     clock = pygame.time.Clock()
     run = True
@@ -19,14 +21,29 @@ def main():
 
     step_timer = pygame.time.get_ticks()
 
+    input_box = InputBox(200, 100, 240, 32)
+    radio_button = RadioButton(200, 200, "Option 1")
+    button = Button(200, 300, 100, 50, "Submit")
+
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
 
+            input_box.handle_event(event)
+            radio_button.handle_event(event)
+            button.handle_event(event)
+
+        input_box.update()
+
         draw_display(WINDOW, WHITE)
-        display_array(WINDOW, current_array, highlight_indices)
+        input_box.draw(WINDOW)
+        radio_button.draw(WINDOW)
+        button.draw(WINDOW)
+        #display_array(WINDOW, current_array, highlight_indices)
+
+        pygame.display.flip()
 
         if pygame.time.get_ticks() - step_timer > 500:
             try:
